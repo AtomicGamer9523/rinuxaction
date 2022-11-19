@@ -61,7 +61,7 @@ function resolveVersionInput(): string {
     return version;
 }
 
-export = async function run() {
+export = async function run(): Promise<void> {
     if (IS_MAC) {
         process.env['AGENT_TOOLSDIRECTORY'] = '/Users/runner/hostedtoolcache';
     }
