@@ -1,6 +1,6 @@
 import * as ghub from '@actions/github';
 
-export = async function run(name: string, release: boolean): Promise<void> {
+export = async function release(name: string, body: string, release: boolean): Promise<void> {
     // Get authenticated GitHub client (Ocktokit): https://github.com/actions/toolkit/tree/master/packages/github#usage
     const github = ghub.getOctokit(process.env.GITHUB_TOKEN || '');
 
@@ -10,7 +10,6 @@ export = async function run(name: string, release: boolean): Promise<void> {
     // This removes the 'refs/tags' portion of the string, i.e. from 'refs/tags/v1.10.15' to 'v1.10.15'
     const tag = "";
     const releaseName = name;
-    const body = "Rinux Package";
     const draft = true;
     const prerelease = release;
     const commitish = ghub.context.sha;
