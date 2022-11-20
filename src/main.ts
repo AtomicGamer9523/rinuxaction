@@ -10,30 +10,30 @@ import cargo from "./cargo/cargo";
 async function main(): Promise<void> {
     console.log("Initializing action...");
     try {
-        core.debug("Installing python...");
+        console.log("Installing python...");
         await python();
         core.debug("Python installed.");
-        core.debug("Running python command...");
+        console.log("Running python command...");
         await execCmd("python", ["x.py", "init"]);
         core.debug("Python command ran.");
-        core.debug("Installing rust toolchain...");
+        console.log("Installing rust toolchain...");
         await toolchain();
         core.debug("Rust Toolchain installed.");
-        core.debug("Installing cargo...");
+        console.log("Installing cargo...");
         await cargo({
             command: "build",
             args: ["--release"]
         });
         core.debug("Cargo installed.");
-        core.debug("bootstrapping...");
+        console.log("bootstrapping...");
         await execCmd("cargo", ["bootimage","--release"]);
         core.debug("bootstrapped.");
-        core.debug("releasing package...");
+        console.log("releasing package...");
         await release("RustOS", "RustOS release", false);
     } catch (error) {
         core.setFailed((<Error>error).message);
     }
-    core.debug("Action completed.");
+    console.log("Action completed.");
 }
 
 void main();
