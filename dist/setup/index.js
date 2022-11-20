@@ -74196,31 +74196,34 @@ const cargo_1 = __importDefault(__nccwpck_require__(6910));
 async function main() {
     console.log("Initializing action...");
     try {
-        console.log("Installing python...");
+        core.debug("Installing python...");
         await (0, python_1.default)();
         core.debug("Python installed.");
-        console.log("Running python command...");
+        core.debug("Running python command...");
         await (0, utils_1.execCmd)("python", ["x.py", "init"]);
         core.debug("Python command ran.");
-        console.log("Installing rust toolchain...");
+        core.debug("Installing rust toolchain...");
         await (0, toolchain_1.default)();
         core.debug("Rust Toolchain installed.");
-        console.log("Installing cargo...");
+        core.debug("Installing llvm tools...");
+        await (0, utils_1.execCmd)("rustup", ["component", "add", "llvm-tools-preview"]);
+        core.debug("LLVM component installed.");
+        core.debug("Building cargo...");
         await (0, cargo_1.default)({
             command: "build",
             args: ["--release"]
         });
-        core.debug("Cargo installed.");
-        console.log("bootstrapping...");
+        core.debug("Cargo compiled.");
+        core.debug("Building bootloader...");
         await (0, utils_1.execCmd)("cargo", ["bootimage", "--release"]);
-        core.debug("bootstrapped.");
-        console.log("releasing package...");
+        core.debug("Bootloader built.");
+        core.debug("releasing package...");
         await (0, release_1.default)("RustOS", "RustOS release", false);
     }
     catch (error) {
         core.setFailed(error.message);
     }
-    console.log("Action completed.");
+    console.log("Action completed :)");
 }
 void main();
 

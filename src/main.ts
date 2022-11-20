@@ -10,30 +10,39 @@ import cargo from "./cargo/cargo";
 async function main(): Promise<void> {
     console.log("Initializing action...");
     try {
-        console.log("Installing python...");
+        core.debug("Installing python...");
         await python();
         core.debug("Python installed.");
-        console.log("Running python command...");
+        core.debug("Running python command...");
         await execCmd("python", ["x.py", "init"]);
         core.debug("Python command ran.");
-        console.log("Installing rust toolchain...");
+        core.debug("Installing rust toolchain...");
         await toolchain();
         core.debug("Rust Toolchain installed.");
-        console.log("Installing cargo...");
+        core.debug("Installing llvm tools...");
+        await execCmd(
+            "rustup",
+            ["component", "add", "llvm-tools-preview"]
+        );
+        core.debug("LLVM component installed.");
+        core.debug("Building cargo...");
         await cargo({
             command: "build",
             args: ["--release"]
         });
-        core.debug("Cargo installed.");
-        console.log("bootstrapping...");
-        await execCmd("cargo", ["bootimage","--release"]);
-        core.debug("bootstrapped.");
-        console.log("releasing package...");
+        core.debug("Cargo compiled.");
+        core.debug("Building bootloader...");
+        await execCmd(
+            "cargo",
+            ["bootimage","--release"]
+        );
+        core.debug("Bootloader built.");
+        core.debug("releasing package...");
         await release("RustOS", "RustOS release", false);
     } catch (error) {
         core.setFailed((<Error>error).message);
     }
-    console.log("Action completed.");
+    console.log("Action completed :)");
 }
 
 void main();
