@@ -1,6 +1,6 @@
 #BUILD(
 rm -r ./dist
-ncc build -o dist/setup src/setup-python.ts
+ncc build -o dist/setup src/main.ts
 ncc build -o dist/cache-save src/cache-save.ts
 cp -r .matchers ./dist/
 )
