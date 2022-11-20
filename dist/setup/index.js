@@ -74874,14 +74874,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 const core = __importStar(__nccwpck_require__(8087));
 const finder = __importStar(__nccwpck_require__(347));
 const path = __importStar(__nccwpck_require__(1017));
 const os = __importStar(__nccwpck_require__(2037));
-const fs_1 = __importDefault(__nccwpck_require__(7147));
 const cache_factory_1 = __nccwpck_require__(3648);
 const utils_1 = __nccwpck_require__(9291);
 function isPyPyVersion(versionSpec) {
@@ -74891,33 +74887,6 @@ async function cacheDependencies(cache, pythonVersion) {
     const cacheDependencyPath = core.getInput('cache-dependency-path') || undefined;
     const cacheDistributor = (0, cache_factory_1.getCacheDistributor)(cache, pythonVersion, cacheDependencyPath);
     await cacheDistributor.restoreCache();
-}
-function resolveVersionInput() {
-    let version = core.getInput('python-version');
-    let versionFile = core.getInput('python-version-file');
-    if (version && versionFile) {
-        core.warning('Both python-version and python-version-file inputs are specified, only python-version will be used.');
-    }
-    if (version) {
-        return version;
-    }
-    if (versionFile) {
-        if (!fs_1.default.existsSync(versionFile)) {
-            throw new Error(`The specified python version file at: ${versionFile} doesn't exist.`);
-        }
-        version = fs_1.default.readFileSync(versionFile, 'utf8');
-        core.info(`Resolved ${versionFile} as ${version}`);
-        return version;
-    }
-    (0, utils_1.logWarning)("Neither 'python-version' nor 'python-version-file' inputs were supplied. Attempting to find '.python-version' file.");
-    versionFile = '.python-version';
-    if (fs_1.default.existsSync(versionFile)) {
-        version = fs_1.default.readFileSync(versionFile, 'utf8');
-        core.info(`Resolved ${versionFile} as ${version}`);
-        return version;
-    }
-    (0, utils_1.logWarning)(`${versionFile} doesn't exist.`);
-    return version;
 }
 module.exports = async function run() {
     var _a;
@@ -74929,17 +74898,15 @@ module.exports = async function run() {
     }
     core.debug(`Python is expected to be installed into ${process.env['RUNNER_TOOL_CACHE']}`);
     try {
-        const version = resolveVersionInput();
-        const checkLatest = core.getBooleanInput('check-latest');
+        const version = "3.10";
         if (version) {
             let pythonVersion;
-            const arch = core.getInput('architecture') || os.arch();
-            const updateEnvironment = core.getBooleanInput('update-environment');
+            const arch = os.arch();
             if (isPyPyVersion(version)) {
                 core.error("Somehow we're trying to install PyPy");
             }
             else {
-                const installed = await finder.useCpythonVersion(version, arch, updateEnvironment, checkLatest);
+                const installed = await finder.useCpythonVersion(version, arch, true, false);
                 pythonVersion = installed.version;
                 core.info(`Successfully set up ${installed.impl} (${pythonVersion})`);
             }
