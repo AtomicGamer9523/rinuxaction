@@ -5,9 +5,6 @@ input:
   cache:
     description: "Used to specify a package manager for caching in the default directory. Supported values: pip, pipenv, poetry."
     required: false
-  token:
-    description: "The token used to authenticate when fetching Python distributions from https://github.com/actions/python-versions. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting."
-    default: ${{ secrets.GITHUB_TOKEN }}
   cache-dependency-path:
     description: "Used to specify the path to dependency files. Supports wildcards or a list of file names for caching multiple dependencies."
 runs:
