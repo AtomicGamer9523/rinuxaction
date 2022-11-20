@@ -7,6 +7,12 @@
     "directories": {
         "lib": "lib"
     },
+    "scripts": {
+        "build": "ncc build -o dist/setup src/main.ts && ncc build -o dist/cache-save src/cache-save.ts",
+        "format": "prettier --write \"{,!(node_modules)/**/}*.ts\"",
+        "format-check": "prettier --check \"{,!(node_modules)/**/}*.ts\"",
+        "release": "ncc build -o dist/setup src/main.ts && ncc build -o dist/cache-save src/cache-save.ts"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/AtomicGamer9523/rinuxaction"
