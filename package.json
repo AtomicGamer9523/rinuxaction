@@ -1,6 +1,6 @@
 {
     "name": "rinux",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": false,
     "description": "Builds and packages using rinux",
     "main": "lib/main.js",
