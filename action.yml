@@ -10,6 +10,9 @@ input:
   token:
     description: "The token used to authenticate when fetching Python distributions from https://github.com/actions/python-versions. When running this action on github.com, the default value is sufficient. When running on GHES, you can pass a personal access token for github.com if you are experiencing rate limiting."
     required: true
+  release:
+    description: "Option to build in release mode or not"
+    default: false
 runs:
   using: 'node16'
   main: 'dist/setup/index.js'
