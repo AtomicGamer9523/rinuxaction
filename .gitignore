@@ -89,6 +89,3 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
-
-# Npm Configuration (Includes Private Keys)
-.npmrc
