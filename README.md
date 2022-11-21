@@ -1,6 +1,6 @@
-# First Interaction
+# RinuxAction
 
-An action for filtering pull requests and issues from first-time contributors.
+An action for building and testing rinux
 
 # Usage
 
